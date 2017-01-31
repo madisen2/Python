@@ -1,34 +1,19 @@
-from PIL import Image
-im=Image.open("chris.jpg")
-
-# :set tabstop=4 softtabstop=4 expandtab shiftwidth=4 autoindent
-# :set list
-# :%s/\t/    /g
-
-print(im.format,im.size,im.mode)
-
-im.show()
-
+from __future__ import print_function
 import os, sys
+from PIL import Image
+
+im = Image.open("kitten.png")
+
+
+size = (128, 128)
 
 for infile in sys.argv[1:]:
-    f, e = os.path.splitext(infile)
-    outfile = f + ".jpg"
+    outfile = os.path.splitext(infile)[0] + ".thumbnail"
     if infile != outfile:
         try:
-            Image.open(infile).save(outfile)
+            im = Image.open(infile)
+            im.thumbnail(size)
+            im.save(outfile, "JPEG")
         except IOError:
-            print("cannot convert", infile)
-
-
-for infile in sys.argv[1:]:
-    try:
-        with Image.open(infile) as im:
-            print(infile, im.format, "%dx%d" % im.size, im.mode)
-
-box = (100, 100, 400, 400)
-
-region = im.crop(box)
-
-    except IOError:
-        pass
+            print("cannot create thumbnail for", infile
+im.show()
