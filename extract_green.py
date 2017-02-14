@@ -2,7 +2,7 @@ from __future__ import print_function
 from PIL import Image
 
 
-im = Image.open("chris.png")
+im = Image.open("chris.jpg")
 
 
 print(im.format, im.size, im.mode)
