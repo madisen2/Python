@@ -1,14 +1,22 @@
+<<<<<<< HEAD
+"""Script usage:# To show the 0th training image with its label
+python dataset_example.py show 0
+python dataset_example.py count"""
+
+=======
 """Script usage:
 
 # To show the 0th training image with its label data
 python dataset_example.py show 0
 python dataset_example.py count
 """
+>>>>>>> 41d6baa7b0e73f04a4fe934e76ebce485884ab4a
 import os
 import click
 from PIL import Image
 import numpy as np
 from natsort import natsorted
+<<<<<<< HEAD
 import PIL.ImageOps
 
 REAL_PATH_TRAIN="/u/madisen2/tlab/Nerve_Segmentation/train"
@@ -137,6 +145,7 @@ def demo_show(image):
 
 #________________________________________________________________________#
 
+=======
 
 REAL_PATH_TEST="/u/madisen2/Python/Nerve_Segmentation/test"
 REAL_PATH_TRAIN="/u/madisen2/Python/Nerve_Segmentation/train"
@@ -233,6 +242,7 @@ def demo_show(image):
     """Shows the image.
     """
     image.show()
+>>>>>>> 41d6baa7b0e73f04a4fe934e76ebce485884ab4a
 
 @click.group()
 def main(**kwargs):
@@ -255,7 +265,11 @@ def count(**kwargs):
 @click.argument('n', type=int)
 def show(**kwargs):
     """Loads and combines the image and target data and shows the
+<<<<<<< HEAD
+    result.https://mail.google.com/mail/u/0/
+=======
     result.
+>>>>>>> 41d6baa7b0e73f04a4fe934e76ebce485884ab4a
     """
     is_test = kwargs['test']
     n = kwargs['n']
@@ -265,7 +279,12 @@ def show(**kwargs):
         demo_combine(image, target)
     demo_show(image)
 
+<<<<<<< HEAD
 if __name__ == '__main__':
     main()
 
+=======
 
+if __name__ == '__main__':
+    main()
+>>>>>>> 41d6baa7b0e73f04a4fe934e76ebce485884ab4a
