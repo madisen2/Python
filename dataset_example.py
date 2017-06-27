@@ -9,7 +9,7 @@ import numpy as np
 from natsort import natsorted
 import PIL.ImageOps
 
-REAL_PATH_TRAIN="/u/madisen2/Nerve_Segmentation/train"
+REAL_PATH_TRAIN="/u/madisen2/tlab/Nerve_Segmentation/train"
 
 #_______________________________________________________________________#
 
@@ -18,10 +18,10 @@ def get_imlist(is_test):
     """Returns a list of file names based off of the path provided."""
 
     if is_test:#setting path to test files
-        path="/u/madisen2/Nerve_Segmentation/test"
+        path="/u/madisen2/tlab/Nerve_Segmentation/test"
 
     else:#setting path to train files, filtering out the masks
-        path="/u/madisen2/Nerve_Segmentation/train"
+        path="/u/madisen2/tlab/Nerve_Segmentation/train"
 
 
     #sorting the selected files naturally
@@ -87,7 +87,6 @@ def get_target(n):
 
     mask=Image.open(REAL_PATH_TRAIN+'/'+os.path.basename((get_imlist(False)[n])).split('.')[0]+'_mask.tif').convert("RGB")
 
-    #mask.show()
    # mask=Image.open(REAL_PATH_TRAIN+'/'+
    #str(get_subject(n))+'_'+str(n)+'_mask.tif').convert("RGB")
     mask_array=np.array(mask, dtype='float32')
@@ -106,7 +105,6 @@ def demo_combine(n):
             ).show()
     #calling the get_image function to retrieve the subject image
 
-   # height,width=subject.size
     #grabbing dimensions that will define the size of the highlight image
 
     highlight=Image.new("RGB",(580,420),(255))
@@ -116,23 +114,13 @@ def demo_combine(n):
     mask=PIL.ImageOps.invert(mask)
     #calling get_image to retrieve the mask image for the associated subject
 
-   # highlight=highlight.convert('L')
-    #highlight=Image.eval(highlight,lambda p:(255-p)//2)
 
-   # combined=Image.composite(subject,mask,highlight).show()
     mask=mask.convert('L')
     mask=Image.eval(mask,lambda p:(255-(255-p)//3))
-   # print(mask)
-   # print(highlight)
 
     combined= Image.composite(#combining all 3 images above together
             subject,
             highlight,mask).show()
-       #     Image.eval(
-      #          mask.convert('L'),
-     #           lambda p:(255-p)//2
-    #        )
-   # ).show()
 
 
     return combined
