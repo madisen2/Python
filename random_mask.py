@@ -21,16 +21,15 @@ def init_ipython():
 #Utility Functions
 #____________________________________________________________________#
 
-def get_random_array():
+def get_random_array(subject_image):
     """This function takes a real image target and creates an array
     of random floats (between 0 and 1) of the same size"""
 
     #loading a mask from the training set to get initial data
-    real_mask=dataset_example.get_target(get_random())
+    #real_mask=dataset_example.get_target(get_random())
 
     #finding the size of the initial image
-   # size=np.shape(real_mask)
-    size=(420,580)
+    size=np.shape(subject_image)
     #creating an array of random numbers between 0 and 1
     random_array=np.random.uniform(0,1,(size))
 
@@ -151,9 +150,9 @@ def get_subject_mask(n):
 def make_image():
 
     image=np.zeros((420,580))
-    image[0:210,0:290]=1
-    image[210:420,290:580]=1
-
+   # image[0:210,0:290]=0
+   # image[210:420,290:580]=0
+    image[0:420,0:580]=1
 
     return image
 
@@ -162,9 +161,9 @@ def make_image():
 def make_mask():
 
     mask=np.zeros((420,580))
-    mask[0:210,0:290]=1
-    mask[210:420,290:580]=1
-
+   # mask[0:210,0:290]=0
+   # mask[210:420,290:580]=0
+    mask[0:420,0:580]=1
     return mask
 
 
@@ -176,37 +175,36 @@ def get_padding(image_pad):
     """This function pads images with zeros on all sides"""
 
     image_pad=np.pad(image_pad,(10,10),'constant',constant_values=0)
-
+    #test=Image.fromarray(np.asarray(image_pad*255,dtype=np.uint8),"L").show()
     return image_pad
 
 
 #_____________________________________________________________________#
 
-def get_rc(n):
+def get_rc(subject_image):#n):
 
-    subject_image=get_subject(n)
+    #subject_image=get_subject(n)
     rows=np.linspace(0,len(subject_image)-1,len(subject_image))
     cols=np.linspace(0,len(subject_image[0])-1,len(subject_image[0]))
     rows=rows.astype(int)
     cols=cols.astype(int)
-
     return rows, cols
 
 #____________________________________________________________________#
 
 
-def get_b(n):#(subject_image,subject_mask):#n):
+def get_b(subject_image,subject_mask):#n):
 
     #loading the images that will be used in least squares method
-    subject_image=get_subject(n)
-    subject_mask=get_subject_mask(n)
+    #subject_image=get_subject(n)
+    #subject_mask=get_subject_mask(n)
 
     #padding the images
-    subject_image=get_padding(subject_image)
+    #subject_image=get_padding(subject_image)
     subject_mask=get_padding(subject_mask)
 
     #loop variables
-    rows,cols=get_rc(n)#subject_image)#n)
+    rows,cols=get_rc(subject_image)#n)
     b=[]
     for i in rows:
         for j in cols:
@@ -229,19 +227,19 @@ def get_squares(areas,b):
 
 #_____________________________________________________________________#
 
-def get_areas(n):
+def get_areas(subject_image):
 
     #loading and padding the image
-    subject_image=get_subject(n)
-    subject_image=get_padding(subject_image)
+    #subject_image_pad=get_subject(n)
+    subject_image_pad=get_padding(subject_image)
 
     #setting loop varibles
-    rows,cols=get_rc(n)
+    rows,cols=get_rc(subject_image)
     areas=[]
 
     for i in rows:
         for j in cols:
-            areas.append(subject_image[i:i+21,j:j+21])
+            areas.append(subject_image_pad[i:i+21,j:j+21])
 
     length=len(areas)
     count=0
@@ -281,7 +279,7 @@ def get_estimated(subject_image,subject_mask):#n):
 
 
     b_new=np.reshape(b_new,(420,580))
-   # temp=Image.fromarray(np.asarray(b_new*255,dtype=np.uint8),"L").show()
+    temp=Image.fromarray(np.asarray(b_new*255,dtype=np.uint8),"L").show()
 
     return b_new
 
