@@ -150,9 +150,9 @@ def get_subject_mask(n):
 def make_image():
 
     image=np.zeros((420,580))
-   # image[0:210,0:290]=0
-   # image[210:420,290:580]=0
-    image[0:420,0:580]=1
+    image[0:210,0:290]=1
+    image[210:420,290:580]=1
+    #image[0:420,0:580]=1
 
     return image
 
@@ -161,9 +161,9 @@ def make_image():
 def make_mask():
 
     mask=np.zeros((420,580))
-   # mask[0:210,0:290]=0
-   # mask[210:420,290:580]=0
-    mask[0:420,0:580]=1
+    mask[0:210,0:290]=1
+    mask[210:420,290:580]=1
+   # mask[0:420,0:580]=1
     return mask
 
 
@@ -193,18 +193,18 @@ def get_rc(subject_image):#n):
 #____________________________________________________________________#
 
 
-def get_b(subject_image,subject_mask):#n):
+def get_b(subject_mask):#n):& subjecty_image?
 
     #loading the images that will be used in least squares method
     #subject_image=get_subject(n)
     #subject_mask=get_subject_mask(n)
 
     #padding the images
-    #subject_image=get_padding(subject_image)
-    subject_mask=get_padding(subject_mask)
+    #subject_image=get_padding(subject_image)#do I even need to pad this?
+    #subject_mask=get_padding(subject_mask) #these two were flipped
 
     #loop variables
-    rows,cols=get_rc(subject_image)#n)
+    rows,cols=get_rc(subject_mask)#n)
     b=[]
     for i in rows:
         for j in cols:
@@ -254,14 +254,14 @@ def get_areas(subject_image):
 def get_estimated(subject_image,subject_mask):#n):
 
 
-    x_b=get_b(subject_image,subject_mask)#n)
-    areas=get_areas(subject_image)#n)
+    x_b=get_b(subject_mask)#n)&subject_image?
+    areas=get_areas(subject_image)#n)changed from subject_image
     coefficients=get_squares(areas,x_b)[0]
     b_new=[]
     count=0
 
 
-    while count<len(areas):#dataset_example.count_frames(False):#5636:#243600:
+    while count<len(areas):
 
         b_new.append((coefficients*areas[count]).sum())
         count=count+1
@@ -270,12 +270,6 @@ def get_estimated(subject_image,subject_mask):#n):
     b_new=b_new/(b_new.max())
 
     count=0
-
-#    while count<len(b_new):
- #       if b_new[count]<0:
-  #          b_new[count]=0
-   #     count=count+1
-   # count=0
 
 
     b_new=np.reshape(b_new,(420,580))
